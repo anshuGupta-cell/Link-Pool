@@ -45,17 +45,3 @@ a {
   }
 }
 
-.nav-bar{
-  justify-content: space-between;
-  padding: 1rem;
-  background: #2f1560;
-  gap: 10px;
-
-  div {
-    display: flex;
-    gap: 10px;
-
-    
-  }
-  
-}
