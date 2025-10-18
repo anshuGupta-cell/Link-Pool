@@ -1,47 +1,128 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import {
+    SignInButton,
+    SignUpButton,
+    SignedIn,
+    SignedOut,
+    UserButton
+} from "@clerk/nextjs"
 
 
 const Navbar = () => {
     const pathName = usePathname()
     const [expanded, setExpanded] = useState(false)
-    
+    const showNavbar = ["/", "/generate", "/about", "/my-trees", "/contact"].includes(pathName)
     const active = "bg-slate-800 rounded-lg font-bold text-white"
+    const [isDarkMode, setIsDarkMode] = useState(false)
+    const sideMenuRef = useRef()
+
+    useEffect(() => {
+        if (localStorage.theme === "dark" || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setIsDarkMode(true)
+        } else {
+            setIsDarkMode(false)
+
+        }
+    }, [])
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add("dark")
+            localStorage.theme = "dark"
+        } else {
+            document.documentElement.classList.remove("dark")
+            localStorage.theme = ""
+
+        }
+    }, [isDarkMode])
+
+
+    const openMenu = () => {
+        sideMenuRef.current.style.transform = "translateX(-10.8rem)"
+    }
+    const closeMenu = () => {
+        sideMenuRef.current.style.transform = "translateX(10rem)"
+    }
+
+
 
 
     return (
-        
-        <div className="py-6 fixed text-sm w-[100vw] ">
-            <div className="flex z-10 justify-between items-center bg-slate-200 mx-auto max-w-[80vw] rounded-full p-2 text-black">
-                <div className="flex gap-5">
-                    <Link className="p-2 text-base font-bold" href="/">
-                        LinkTree
-                    </Link>
-                </div>
-                    <Link className={`p-2 ${pathName == "/generate"? active: ""}`} href="/generate">Generate</Link>
+        <>
+        {showNavbar && <div className="fixed z-40 top-0 text-sm w-[100vw] p-2 bg-[#f1f5f578] dark:bg-[#0e0a0a78] backdrp-blur-lg">
+            <div className="z-10 mx-auto max-w-[90vw]  rounded-full shadow-sm bg-slate-100  dark:shadow-white/20 dark:bg-slate-800 dark:text-salte-300">
+                <div className="flex  items-center justify-between md:justify-around p-2 gap-3 ">
+
+                    <div className="flex items-center bg-gradient-to-bl rounded-xl">
+                        <Link className="p-2 text-xl font-bold" href="/">
+                            Link Pool
+                        </Link>
+                    </div>
+
+                    <div className="hidden md:flex py-2 px-3 text-nowrap text-slate-600 dark:text-slate-300 gap-1 bg-ma-100 dark:bg-slate-700 rounded-full">
+                        <Link onClick={closeMenu} className={`p-2 ${pathName == "/" ? active : ""}`} href="/">Home</Link>
+                        <Link onClick={closeMenu} className={`p-2 ${pathName == "/generate" ? active : ""}`} href="/generate">Generate</Link>
+                        <Link onClick={closeMenu} className={`p-2 ${pathName == "/my-trees" ? active : ""}`} href="/my-trees">My trees</Link>
+                        <Link onClick={closeMenu} className={`p-2 ${pathName == "/about" ? active : ""}`} href="/about">About</Link>
+                        <Link onClick={closeMenu} className={`p-2 ${pathName == "/contact" ? active : ""}`} href="/contact">Contact me</Link>
+                    </div>
+
+                    <div className="flex gap-2">
+
+                        <button onClick={() => { setIsDarkMode(!isDarkMode) }} className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover">
+                            <img className="w-5 h-5 dark:invert" src={`${isDarkMode ? "/svg/moon-02-stroke-rounded.svg" : "/svg/sun-02-stroke-rounded.svg"}`} alt="theme" />
+                        </button>
+
+                        <Link className={`py-2 px-3 hidden md:flex items-center bg-slate-300 rounded-full border border-slate-600 dark:bg-slate-900 ${pathName == "#contact" ? active : ""}`} href="#contact">
+                            Contact me
+                            <img className="w-5 h-5 dark:invert" src="/svg/arrow-up-right-01-stroke-rounded.svg" alt="arrow" />
+                        </Link>
+
+                        <button className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover block md:hidden lg:hidden " onClick={openMenu}>
+                            <img className="w-5 h-5 dark:invert" src="/svg/bars-solid.svg" alt="hamburger" />
+                        </button>
+
+                    </div>
 
 
-                <div className="flex gap-1 text-white">
-                    <Link className="p-2 bg-gray-800 rounded-lg" href="/login">Log in</Link>
-                    <Link className="p-2 bg-green-800 rounded-3xl" href="/signup">Sign up</Link>
-                    <button className="text-black py-2 px-3" onClick={() => {setExpanded(!expanded)}}>=</button>
                 </div>
             </div>
 
-            {expanded && <div className="bg-slate-200 z-0 h-[100vh] absolute top-0 w-[100vw] left-0 flex justify-around overflow-x-scroll scrollbar-none items-center mx-auto p-2 text-gray-300 border-gray-300 border-b" >
-                <div className="flex text-nowrap items-end gap-1">
-                    <Link className={`p-2  ${pathName == "/"? active: ""}`} href="/">Home</Link>
-                    <Link className={`p-2 ${pathName == "/about"? active: ""}`} href="/about">About</Link>
-                    <Link className={`p-2 ${pathName == "/shorten"? active: ""}`} href="/shorten">Shorten</Link>
-                    <Link className={`p-2 ${pathName == "/contact-us"? active: ""}`} href="/contact-us">Contact Us</Link>
-                    <Link className={`p-2 ${pathName == "/Github"? active: ""}`} href="/Github">Github</Link>
-                </div>
-            </div>}
+            {/* mobile menu */}
 
-        </div>
+            <div ref={sideMenuRef} className="fixed grid w-40 top-2 -right-40 md:hidden p-3 text-nowrap   gap-1 bg-slate-100 dark:bg-slate-900 z-10 mx-auto rounded-xl transition duration-500 text-slate-600 dark:text-slate-300 ">
+
+                <button onClick={closeMenu} className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover block md:hidden lg:hidden place-self-end">
+                    <img className="w-5 h-5 dark:invert " src="/svg/xmark-regular.svg" alt="cross" />
+                </button>
+
+                <Link onClick={closeMenu} className={`p-2 ${pathName == "/" ? active : ""}`} href="/">Home</Link>
+                <Link onClick={closeMenu} className={`p-2 ${pathName == "/generate" ? active : ""}`} href="/generate">Generate</Link>
+                <Link onClick={closeMenu} className={`p-2 ${pathName == "/my-trees" ? active : ""}`} href="/my-trees">My trees</Link>
+                <Link onClick={closeMenu} className={`p-2 ${pathName == "/about" ? active : ""}`} href="/about">About</Link>
+                <Link onClick={closeMenu} className={`p-2 ${pathName == "/contact" ? active : ""}`} href="/contact">Contact me</Link>
+
+            </div>
+
+        </div>}
+    </>
+
     )
 }
 
 export default Navbar;
+
+//  <SignedOut>
+//                                 <SignInButton />
+//                                 <SignUpButton>
+//                                     <button className="bg-yellow-500 text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+//                                         Sign Up
+//                                     </button>
+//                                 </SignUpButton>
+//                             </SignedOut>
+//                             <SignedIn>
+//                                 <UserButton />
+//                             </SignedIn>

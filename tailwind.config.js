@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {},
   },
+  darkMode: 'selector',
   plugins: [
     function ({ addUtilities }) {
       addUtilities({
@@ -19,7 +20,13 @@ module.exports = {
           "display": "grid",
           "background": "black"
         },
-        ".res-grid": {
+        ".res-grid-180": {
+          "grid-template-columns": "repeat(auto-fit, minmax(180, 1fr))"
+        },
+        ".res-grid-200": {
+          "grid-template-columns": "repeat(auto-fit, minmax(200, 1fr))"
+        },
+        ".res-grid-280": {
           "grid-template-columns": "repeat(auto-fit, minmax(280, 1fr))"
         }
       })

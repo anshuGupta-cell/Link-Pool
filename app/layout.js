@@ -2,6 +2,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/Navbar";
+import {
+  ClerkProvider
+} from "@clerk/nextjs"
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -19,17 +22,18 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
-    <html lang="en">
-      <body className={`bg-green-800 `}>
-      {/* <body className={`${geistSans.variable} ${geistMono.variable} bg-green-800`}> */}
-        <ToastContainer/>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={` antialiased `}>
 
-        <Navbar/>
-        {children}
-
+          <ToastContainer />
+          <Navbar />
+          {children}
           
-      </body>
-    </html>
-  );
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }
