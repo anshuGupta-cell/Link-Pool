@@ -12,11 +12,14 @@ const Handle = () => {
     const [newHandle, setNewHandle] = useState()
     const [newPfp_url, setNewPfp_Url] = useState()
     const [newDesc, setNewDesc] = useState()
+    const [showOptions, setShowOptions] = useState(false)
+
+  
 
     const fetchHandle = async () => {
-        const res = await fetch("/api/handle")
-        const data = (await res.json())
-        setHandles(data.rows)
+        const result = await fetch("/api/handle", { cache: "no-store" })
+        const data = (await result.json())
+        setHandles(data.res.rows)
     }
 
     const deleteHandle = async (hno) => {
@@ -29,8 +32,13 @@ const Handle = () => {
             })
         })
         const data = (await res.json())
-        console.log("data", data);
-        fetchHandle()
+
+        if (data.success) {
+            fetchHandle()
+            toast.success(data.message)
+        } else {
+            toast.error(data.message)
+        }
 
     }
 
@@ -44,26 +52,27 @@ const Handle = () => {
 
     const updateHandle = async (e) => {
         e.preventDefault()
-        console.log(hno, newHandle, newPfp_url, newDesc);
 
-        const uid = '646ccc06-f74f-44ce-a40e-8be410b7be26'
         const res = await fetch("/api/handle", {
             method: "PATCH",
             "Content-Type": "application/json",
             body: JSON.stringify({
-                hno, newHandle, newPfp_url, newDesc, uid
+                hno, newHandle, newPfp_url, newDesc
             })
         })
-        // const data = await res.json()
-        // console.log("data", data);
+        const data = await res.json()
+        if (data.success) {
+            fetchHandle()
+            toast.success(data.message)
+        } else {
+            toast.error(data.message)
+        }
 
         sethno("")
         setNewHandle("")
         setNewPfp_Url("")
         setNewDesc("")
-        setModalState(!modalState)
-        fetchHandle()
-
+        setModalState(false)
     }
 
     const handleCopy = async (handle) => {
@@ -86,29 +95,60 @@ const Handle = () => {
         <>
             {handles.map((handle, i) => (
 
-                <div key={handle.handle_name} className="grid  gap-2 border p-2">
-                    <div className="flex gap-2 items-center">
-                        <ul>
-                            <img className="bg-blue-300 w-16 aspect-square object-cover rounded-full" width={100} height={100} src={handle.pfp_url} alt="profile picture" />
-                        </ul>
-                        <ul className="w-full ">
-                            <li className="flex justify-between items-center">
-                                <h3 className="font-bold">{handle.handle_name}</h3>
-                                <button onClick={()=>handleCopy(handle.handle_name)} className="flex items-center justify-center gap-2 rounded-full bg-indigo-200 py-2 px-3 border border-purple-800 cursor-pointer">
+                <div key={handle.handle_name} className="">
+                    <div key={handle.handle_name} className="grid md:grid-cols-2 gap-4 rounded-lg px-2 py-3 bg-gradient-to-br from:bg-indigo-100 to:bg-purple-100">
+
+                        <div className="grid gap-2 items-center bg-white/10 p-2 rounded-lg">
+                            <div className="grid gap-2 items-center">
+
+                                <ul className="flex">
+                                    <li className="w-full ">
+                                        <img className="mx-auto bg-blue-300 w-28 h-28 object-cover rounded-full" width={100} height={100} src={handle.pfp_url} alt="profile picture" />
+                                    </li>
+                                    <details className="relative">
+                                        <summary>
+                                            <img className="w-7 dark:invert" src="/svg/more-vertical-stroke-rounded.svg" alt="profile picture" />
+                                        </summary>
+                                        <div open className="absolute rounded-lg p-2 right-2 bg-purple-300 dark:bg-slate-700 w-40 ">
+                                            <ul onClick={() => handleCopy(handle.handle_name)} className="flex gap-2">
+                                                <img className="w-5 dark:invert" src="/svg/copy-link-stroke-rounded.svg" alt="" />
+                                                <p className="text-nowrap">Copy path</p>
+                                            </ul>
+                                            <ul onClick={() => { initiateUpdate(i) }} className="flex gap-2">
+                                                <img className="w-5 dark:invert" src="/svg/pencil-edit-02-stroke-rounded.svg" alt="" />
+                                                <p className="text-nowrap">Edit handle</p>
+                                            </ul>
+                                            <ul onClick={() => { deleteHandle(handle.hno) }} className="flex gap-2">
+                                                <img className="w-5 dark:invert" src="/svg/delete-02-stroke-rounded.svg" alt="" />
+                                                <p className="text-nowrap">Delete handle</p>
+                                            </ul>
+                                        </div>
+                                    </details>
+                                </ul>
+
+                                <ul className="w-full ">
+                                    <li className="flex justify-between items-center">
+                                        <h3 className="font-bold mx-auto">{handle.handle_name}</h3>
+                                        {/* <button onClick={() => handleCopy(handle.handle_name)} className="flex items-center justify-center gap-2 rounded-full bg-indigo-200 py-2 px-3 border border-purple-800 cursor-pointer">
                                     Copy Path
-                                    <img className="w-6 h-6" src="/svg/copy-link-stroke-rounded.svg " alt="copy link" />
-                                </button>
-                            </li>
-                            <p>{handle.description}</p>
-                        </ul>
+                                    <img className="w-6 h-6 dark:invert" src="/svg/copy-link-stroke-rounded.svg " alt="copy link" />
+                                </button> */}
+                                    </li>
+                                    <p className="text-center">{handle.description}</p>
+                                </ul>
 
-                        <ul className="grid gap-2">
-                            <img onClick={() => { initiateUpdate(i) }} className="w-6 h-6" src="/svg/pencil-edit-02-stroke-rounded.svg" alt="edit handle" />
-                            <img onClick={() => { deleteHandle(handle.hno) }} className="w-6" src="/svg/delete-02-stroke-rounded.svg" alt="delete handle" />
-                        </ul>
+                                {/* <ul className="grid gap-2">
+                            <img onClick={() => { initiateUpdate(i) }} className="w-6 h-6 dark:invert" src="/svg/pencil-edit-02-stroke-rounded.svg" alt="edit handle" />
+                            <img onClick={() => { deleteHandle(handle.hno) }} className="w-6 dark:invert" src="/svg/delete-02-stroke-rounded.svg" alt="delete handle" />
+                        </ul> */}
+                            </div>
+                        </div>
+                        <div className="bg-white/10 p-2 rounded-lg">
+                            <h2 className="text-xl font-medium">Links</h2>
+                            <Links hno={handle.hno} />
+                        </div>
+
                     </div>
-                    <Links hno={handle.hno} />
-
                 </div>
             ))}
             {modalState && <Modal

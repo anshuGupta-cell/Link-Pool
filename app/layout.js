@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={` antialiased `}>
+        <body className={` antialiased dark:text-white/80 dark:bg-slate-800`}>
 
           <ToastContainer />
           <Navbar />

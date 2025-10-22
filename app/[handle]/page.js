@@ -14,12 +14,16 @@ export default async function Page({ params }) {
         console.log(res);
 
     }
+
     const result = await pool.query('SELECT * FROM handle where handle_name = $1', [handle])
     const resultLink = await pool.query('SELECT * FROM link where hno = $1', [result.rows[0].hno])
 
+
     if (!result) {
+        toast.error("Did not found handle. Please use a valid handle!!!")
         return <div>not found</div>
     }
+
 
     return (
         <div className="w-[100svw] h-[100svh] overflow-hidden grid" style={{ backgroundImage: `url("/profile_pic.png")`, backgroundSize: "contain" }}>

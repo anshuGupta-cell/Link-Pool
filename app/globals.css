@@ -21,6 +21,10 @@ img{
   
 }
 
-Image {
-  
+summary::-webkit-details-marker{
+  display: none;
+}
+summary::marker{
+  font-size: 0;
+  display: none;
 }

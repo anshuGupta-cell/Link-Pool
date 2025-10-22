@@ -28,7 +28,8 @@ module.exports = {
         },
         ".res-grid-280": {
           "grid-template-columns": "repeat(auto-fit, minmax(280, 1fr))"
-        }
+        },
+        
       })
     }
   ],
