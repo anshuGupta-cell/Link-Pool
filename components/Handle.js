@@ -14,7 +14,7 @@ const Handle = () => {
     const [newDesc, setNewDesc] = useState()
     const [showOptions, setShowOptions] = useState(false)
 
-  
+
 
     const fetchHandle = async () => {
         const result = await fetch("/api/handle", { cache: "no-store" })
@@ -93,7 +93,8 @@ const Handle = () => {
 
     return (
         <>
-            {handles.map((handle, i) => (
+            {!handles.length > 0? <div>no data foumd</div>: <div>fdss</div>}
+            {handles > 0 && handles.map((handle, i) => (
 
                 <div key={handle.handle_name} className="">
                     <div key={handle.handle_name} className="grid md:grid-cols-2 gap-4 rounded-lg px-2 py-3 bg-gradient-to-br from:bg-indigo-100 to:bg-purple-100">
@@ -105,7 +106,7 @@ const Handle = () => {
                                     <li className="w-full ">
                                         <img className="mx-auto bg-blue-300 w-28 h-28 object-cover rounded-full" width={100} height={100} src={handle.pfp_url} alt="profile picture" />
                                     </li>
-                                    <details className="relative">
+                                    <div className="relative">
                                         <summary>
                                             <img className="w-7 dark:invert" src="/svg/more-vertical-stroke-rounded.svg" alt="profile picture" />
                                         </summary>
@@ -123,7 +124,7 @@ const Handle = () => {
                                                 <p className="text-nowrap">Delete handle</p>
                                             </ul>
                                         </div>
-                                    </details>
+                                    </div>
                                 </ul>
 
                                 <ul className="w-full ">

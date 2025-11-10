@@ -102,7 +102,7 @@ const Links = (props) => {
     return (
         <div className="grid gap-2 w-full ">
 
-            {links.map((link, i) => (
+            {links.length > 0 && links.map((link, i) => (
                 <ul key={link.lno} className="flex justify-between gap-2 border border-purple-500 rounded-lg p-2">
                     <li>
                         <p>{link.link_text}</p>

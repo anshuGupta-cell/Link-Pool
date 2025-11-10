@@ -1,6 +1,7 @@
 import React from "react"
 import Link from "next/link"
 import pool from "@/lib/db"
+import ShareHandle from "@/components/ShareHandle"
 
 
 export default async function Page({ params }) {
@@ -15,18 +16,29 @@ export default async function Page({ params }) {
 
     }
 
-    const result = await pool.query('SELECT * FROM handle where handle_name = $1', [handle])
-    const resultLink = await pool.query('SELECT * FROM link where hno = $1', [result.rows[0].hno])
+    // const result = await pool.query('SELECT * FROM handle where handle_name = $1', [handle])
+    // const resultLink = await pool.query('SELECT * FROM link where hno = $1', [result.rows[0].hno])
 
 
-    if (!result) {
-        toast.error("Did not found handle. Please use a valid handle!!!")
-        return <div>not found</div>
-    }
+    // if (!result) {
+    //     toast.error("Did not found handle. Please use a valid handle!!!")
+    //     return <div>not found</div>
+    // }
+
+    const result = {rows:[{
+        pfp_url: "/profile_pic.png",
+        description: "description",
+        handle_name: "anshu"
+    }]}
+    const resultLink = {rows:[{
+        lno: 1,
+        link: "https://instagram.com",
+        link_text: "Instagram"
+    }]}
 
 
     return (
-        <div className="w-[100svw] h-[100svh] overflow-hidden grid" style={{ backgroundImage: `url("/profile_pic.png")`, backgroundSize: "contain" }}>
+        <div className="w-[100svw] h-[100svh] overflow-hidden grid" style={{ backgroundImage: `url(${result.rows[0].pfp_url})`, backgroundSize: "contain" }}>
             {/* <img className="h-[100vh]  w-[100vw] blur-[6px] py-[1vh] " src={result.rows[0].pfp_url} alt={result.rows[0].pfp_url} /> */}
 
             <div className="backdrop-blur-lg p-3 text-sm">
@@ -41,7 +53,7 @@ export default async function Page({ params }) {
                     <div className="max-w-3xl my-3">
                         <h3 className="py-2 text-center">Click on these links to open them in new tab</h3>
                         <div className="text-black w-full grid res-grid-280 gap-2 ">
-                            {resultLink.rows.map((link) => (
+                            {resultLink.rows && resultLink.rows.length > 0 && resultLink.rows.map((link) => (
                                 <div key={link.lno} className="flex p-2 bg-slate-100 rounded-lg cursor-pointer">
                                     <Link className="w-full text-center" target="_blank" href={link.link}>{link.link_text}</Link>
                                     <img src="/svg/arrow-up-right-01-stroke-rounded.svg" />
@@ -49,6 +61,7 @@ export default async function Page({ params }) {
                             ))}
                         </div>
                     </div>
+                    <ShareHandle />
                 </div>
             </div>
         </div>
