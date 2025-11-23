@@ -3,13 +3,13 @@ import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import ShareModal from "@/components/ShareModal"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
+
 
 export default function Page() {
     const pathname = usePathname()
     const handle = pathname.split('/')[1]
     const [result, setResult] = useState({})
-    const [showModal, setShowModal] = useState(false)
-
 
     const fetchData = async () => {
         const res = await fetch(`/api/your-trees?handle=${handle}`, { caches: "no-store" })
@@ -19,10 +19,8 @@ export default function Page() {
 
     useEffect(() => {
         fetchData()
+
     }, [])
-
-      
-
 
 
     return (
@@ -31,9 +29,16 @@ export default function Page() {
 
             <div className="backdrop-blur-lg p-3 text-sm">
                 <div className="max-w-3xl mx-auto my-5 ">
-                    <ShareModal/>
+                    <div className="flex justify-between">
+                        <Link className="p-2 font-bold text-white bg-purple-700 px-3 py-2 rounded-xl shadow-pink-600 shadow-md" href="/">
+                            Link Pool
+                        </Link>
+                        <div>
+                            <ShareModal />
+                        </div>
+                    </div>
                     <div className="grid place-items-center text-center gap-1">
-                        <img className="w-28 h-28 object-cover rounded-full " src={result.pfp_url} alt={result.pfp_url} />
+                        <Image height={100} width={100} className="w-28 h-28 object-cover rounded-full" src={result.pfp_url || "/profile_pic.png"} alt={result.pfp_url || "profile pic"} />
                         <h1 className="text-xl" >{result.handle_name}</h1>
                         <p className="text-xs">{result.description}</p>
                     </div>
@@ -49,6 +54,10 @@ export default function Page() {
                             ))}
                         </div>
                     </div>
+                    <div className="flex justify-center my-6">
+                        <button className="text-white bg-purple-700 px-3 py-2 rounded-xl shadow-pink-600 shadow-md">Follow</button>
+                    </div>
+                    
                 </div>
             </div>
         </div>
