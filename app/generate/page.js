@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation"
 import React, { Suspense, use, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
+
 const Generate = () => {
 
     const [links, setLinks] = useState([{ link: "", linkText: "" }])
@@ -83,7 +84,7 @@ const Generate = () => {
     return (
         <div className="bg-gradient-to-r from-pink-50 via-purple-50 to-red-50 py-32 dark:bg-gradient-to-r dark:from-slate-800 dark:to-slate-700 ">
 
-            <div className="m-auto max-w-6xl py-6 rounded grid gap-4 bg-white dark:bg-transparent">
+            <div className="m-auto max-w-6xl py-6 rounded grid gap-4 bg-white dark:bg-black/10">
 
 
                 <form onSubmit={(e) => submitLinks(e)} className="w-[95%] p-4 mx-auto grid gap-4 focus-within:outline outline-2 outline-gray-800 dark:outline-gray-500 rounded-lg dark:text-white/80">
@@ -111,24 +112,28 @@ const Generate = () => {
                     </div>
                     <div className="grid gap-2">
                         <h3 className="font- text-lg">Step 3. Add link and link text</h3>
-                        {links && links.map((item, i) => (
-                            <div className="flex justify-around opacity-95 p-2 rounded-lg border relative" key={i} >
-                                <div className="w-[92%] grid res-grid-200 gap-2 " >
-                                    <input name="linkText" className="text-black rounded-full focus:outline-green-500 py-1 px-3 bg-slate-100 dark:bg-slate-600 dark:text-white/80" type="text" value={item.linkText || ""} onChange={(e) => handleChange(i, item.link, e.target.value)} placeholder="Enter link text" required />
-                                    <input name="link" className="text-black rounded-full focus:outline-green-500 py-1 px-3 bg-slate-100 dark:bg-slate-600 dark:text-white/80" type="link" value={item.link || ""} onChange={(e) => handleChange(i, e.target.value, item.linkText)} placeholder="Enter link" required />
+                        <div className="border rounded-lg py-1">
 
-                                </div>
-                                <div>
+                            {links && links.map((item, i) => (
+                                <div className="flex justify-around opacity-95 p-1  relative" key={i} >
+                                    <div className="w-[92%] grid res-grid-200 gap-2 " >
+                                        <input name="linkText" className="text-black rounded-full focus:outline-green-500 py-1 px-3 bg-slate-100 dark:bg-slate-600 dark:text-white/80" type="text" value={item.linkText || ""} onChange={(e) => handleChange(i, item.link, e.target.value)} placeholder="Enter link text" required />
+                                        <input name="link" className="text-black rounded-full focus:outline-green-500 py-1 px-3 bg-slate-100 dark:bg-slate-600 dark:text-white/80" type="link" value={item.link || ""} onChange={(e) => handleChange(i, e.target.value, item.linkText)} placeholder="Enter link" required />
 
-                                    <button type="button" disabled={links.length == 1} className="py-1" onClick={() => removeLink(i)}>
-                                        <div className="btn transform-bg hover:bg-slate-200 p-1 rounded-full">
-                                            <img className="dark:invert object-cover rounded-full w-[0.8rem] h-[0.8rem]" src="/svg/xmark-regular.svg" alt="remove" />
-                                        </div>
-                                    </button>
+                                    </div>
+                                    <div>
+
+                                        <button type="button" disabled={links.length == 1} className="py-1" onClick={() => removeLink(i)}>
+                                            <div className="btn transform-bg hover:bg-slate-200 p-1 rounded-full">
+                                                <img className="dark:invert object-cover rounded-full w-[0.8rem] h-[0.8rem]" src="/svg/xmark-regular.svg" alt="remove" />
+                                            </div>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                         <button type="button" className="rounded-lg active:scale-95 py-1 px-2 bg-slate-800 dark:bg-pink-700 shadow-purple-600 shadow-md text-sm text-white w-fit" onClick={addLink} >Add Link</button>
+
                     </div>
 
                     <div className="flex justify-end ">

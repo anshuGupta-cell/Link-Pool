@@ -16,7 +16,7 @@ const ShareModal = (props) => {
 
     }
 
-    const title = document.title
+    const title = "anshu"
     const text = 0
     const url = window.location.href
 

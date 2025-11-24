@@ -14,7 +14,7 @@ export const GET = async (req) => {
 
     try {
 
-        const result = await pool.query('SELECT * FROM handle where handle_name = $1', ['shivani'])
+        const result = await pool.query('SELECT * FROM handle where handle_name = $1', [handle])
 
         const res = await pool.query("SELECT h.handle_name, h.pfp_url, h.description , json_agg(json_build_object('link', l.link, 'link_text', l.link_text)) as links from handle h left join link l on h.hno = l.hno WHERE h.handle_name = $1 GROUP BY h.handle_name, h.pfp_url, h.description", ['shivani'])
 

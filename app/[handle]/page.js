@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import ShareModal from "@/components/ShareModal"
-import { usePathname } from "next/navigation"
+import { notFound, usePathname } from "next/navigation"
 import Image from "next/image"
 
 
@@ -14,13 +14,18 @@ export default function Page() {
     const fetchData = async () => {
         const res = await fetch(`/api/your-trees?handle=${handle}`, { caches: "no-store" })
         const data = await res.json()
-        setResult(data.res.rows[0])
+        setResult(data?.res?.rows?.[0])
     }
 
     useEffect(() => {
         fetchData()
 
     }, [])
+    if (!result.handle_name) {
+        notFound()
+    }
+
+
 
 
     return (
@@ -57,7 +62,7 @@ export default function Page() {
                     <div className="flex justify-center my-6">
                         <button className="text-white bg-purple-700 px-3 py-2 rounded-xl shadow-pink-600 shadow-md">Follow</button>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
