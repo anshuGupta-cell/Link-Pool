@@ -100,7 +100,7 @@ const ShareModal = (props) => {
     return (
         <>
             <div onClick={() => { openMenu() }} className="w-full flex">
-                <button className="text-white bg-purple-700 px-3 py-2 rounded-xl shadow-pink-600 shadow-md" >Share</button>
+                <button className="text-white bg-cyan-500 px-3 py-2 rounded-xl shadow-purple-700 shadow-sm" >Share</button>
             </div>
             <div id="shareModal" onClick={(e) => e.target.id === "shareModal" && closeMenu()} ref={shareRef} className="fixed top-0 overflow-hidden h-0 bottom-0 left-0 right-0   opacity-0 bg-gray-900/50 grid place-items-end p-3">
 
