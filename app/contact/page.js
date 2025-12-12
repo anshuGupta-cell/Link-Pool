@@ -1,5 +1,3 @@
-import { auth, currentUser } from "@clerk/nextjs/server"
-import { Metadata } from "next"
 
 export async function generateMetadata  ()  {
 
