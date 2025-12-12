@@ -54,10 +54,10 @@ const Navbar = () => {
         <>
             {showNavbar && <div className="fixed z-40 top-0 text-sm w-[100vw] p-2 bg-[#f1f5f578] dark:bg-[#0e0a0a78] backdrp-blur-lg">
                 <div className="z-10 mx-auto max-w-[90vw]  rounded-full shadow-sm bg-slate-100  dark:shadow-white/20 dark:bg-slate-800 dark:text-salte-300">
-                    <div className="flex  items-center justify-between md:justify-around p-2 gap-3 ">
+                    <div className="flex  items-center justify-between md:justify-around p-2 gap-3 flex-wrap">
 
                         <div className="flex items-center bg-gradient-to-bl rounded-xl">
-                            <Link className="p-2 text-xl font-bold" href="/">
+                            <Link className="p-2 text-xl font-bold " href="/">
                                 Link Pool
                             </Link>
                         </div>
