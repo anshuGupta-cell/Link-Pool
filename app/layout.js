@@ -19,14 +19,10 @@ import {
 export const metadata = {
   title: "Link Pool - All in one link in bio",
   description: "Create your link pool. All your links at one place. Create smart link pages with custom handles and links.",
-<<<<<<< HEAD
   keywords: ["linktree clone", "smart links", "profile link"],
   other: {
     "google-site-verification": "DgqwRpq7L5WqCJCs_ePpKGvaDkGYPGl2MGNgN8q3ZuE"
   }
-=======
-  keywords: ["linktree clone", "smart links", "profile link"]
->>>>>>> v1.01
 };
 
 export default function RootLayout({ children }) {
@@ -39,7 +35,7 @@ export default function RootLayout({ children }) {
           <ToastContainer />
           <Navbar />
           {children}
-          
+
         </body>
       </html>
     </ClerkProvider>
