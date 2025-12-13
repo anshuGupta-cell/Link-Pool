@@ -3,7 +3,7 @@ import React from "react"
 
 export async function generateMetadata({ params }) {
     const { handle } = await params
-    const res = await fetch(`http://localhost:3000/api/your-trees?handle=${handle}`, { caches: "no-store" })
+    const res = await fetch(`${process.env.BASEURL}/your-trees?handle=${handle}`, { caches: "no-store" })
     const data = await res.json()
     if (!data?.res?.rows?.[0].handle_name) {
         notFound()

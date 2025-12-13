@@ -18,7 +18,7 @@ const ShareModal = (props) => {
 
     const title = "anshu"
     const text = 0
-    const url = window.location.href
+    const url = "sdfsf"
 
     let platforms = [
         {
