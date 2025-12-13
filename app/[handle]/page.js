@@ -15,6 +15,7 @@ export default function Page() {
         const res = await fetch(`/api/your-trees?handle=${handle}`, { caches: "no-store" })
         const data = await res.json()
         setResult(data?.res?.rows?.[0])
+        console.log("fetching");
         
     }
 
@@ -46,8 +47,8 @@ export default function Page() {
                     <div className="max-w-3xl my-3">
                         <h3 className="py-2 text-center">Click on these links to open them in new tab</h3>
                         <div className="text-black w-full grid res-grid-280 gap-2 ">
-                            {result.links && result.links.length > 0 && result.links.map((link) => (
-                                <div key={link.lno} className="flex p-2 bg-slate-100 rounded-lg cursor-pointer">
+                            {result.links && result.links.length > 0 && result.links.map((link, i) => (
+                                <div key={i} className="flex p-2 bg-slate-100 rounded-lg cursor-pointer">
                                     <Link className="w-full text-center" target="_blank" href={link.link}>{link.link_text}</Link>
                                     <img src="/svg/arrow-up-right-01-stroke-rounded.svg" />
                                 </div>
