@@ -20,6 +20,8 @@ const Handle = () => {
         const result = await fetch("/api/handle", { cache: "no-store" })
         const data = (await result.json())
         setHandles(data.res.rows)
+        console.log("handles",data.res.rows);
+        
     }
 
     const deleteHandle = async (hno) => {
@@ -93,8 +95,9 @@ const Handle = () => {
 
     return (
         <>
-            {!handles.length > 0? <div>no data foumd</div>: <div>fdss</div>}
-            {handles > 0 && handles.map((handle, i) => (
+            {/* {!handles.length > 0? <div>no data foumd</div>: <div>fdss</div>} */}
+            Handles
+            {handles.length >= 0 && handles.map((handle, i) => (
 
                 <div key={handle.handle_name} className="">
                     <div key={handle.handle_name} className="grid md:grid-cols-2 gap-4 rounded-lg px-2 py-3 bg-gradient-to-br from:bg-indigo-100 to:bg-purple-100">

@@ -38,7 +38,7 @@ export default function Page() {
                         </div>
                     </div>
                     <div className="grid place-items-center text-center gap-1">
-                        <Image height={100} width={100} className="w-28 h-28 object-cover rounded-full" src={result.pfp_url || "/profile_pic.png"} alt={result.pfp_url || "profile pic"} />
+                        <img className="w-28 h-28 object-cover rounded-full" src={result.pfp_url || "/profile_pic.png"} alt={result.pfp_url || "profile pic"} />
                         <h1 className="text-xl" >{result.handle_name}</h1>
                         <p className="text-xs">{result.description}</p>
                     </div>
