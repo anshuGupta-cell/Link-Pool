@@ -70,13 +70,13 @@ const Navbar = () => {
                             <Link onClick={closeMenu} className={`p-2 ${pathName == "/contact" ? active : ""}`} href="/contact">Contact me</Link> */}
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
 
                             <button onClick={() => { setIsDarkMode(!isDarkMode) }} className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover">
                                 <img className="w-5 h-5 dark:invert" src={`${isDarkMode ? "/svg/moon-02-stroke-rounded.svg" : "/svg/sun-02-stroke-rounded.svg"}`} alt="theme" />
                             </button>
 
-                            <div>
+                            <div className="grid">
                                 <SignedOut>
                                     <SignInButton />
                                     <SignUpButton>
@@ -90,7 +90,7 @@ const Navbar = () => {
                                 </SignedIn>
                             </div>
 
-                            <button className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover block md:hidden lg:hidden " onClick={openMenu}>
+                            <button onClick={openMenu} className="p-2 rounded-full hover:bg-slate-300 dark:hover:bg-darkHover block md:hidden lg:hidden " >
                                 <img className="w-5 h-5 dark:invert" src="/svg/bars-solid.svg" alt="hamburger" />
                             </button>
 

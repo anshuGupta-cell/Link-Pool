@@ -15,8 +15,6 @@ export default function Page() {
         const res = await fetch(`/api/your-trees?handle=${handle}`, { caches: "no-store" })
         const data = await res.json()
         setResult(data?.res?.rows?.[0])
-        console.log("fetching");
-        
     }
 
     useEffect(() => {
@@ -25,7 +23,7 @@ export default function Page() {
 
 
     return (
-        <div className="w-[100svw] h-[100svh] overflow-hidden grid" style={{ backgroundImage: `url(${result.pfp_url})`, backgroundSize: "contain" }}>
+        <div className="w-[100svw] h-[100svh] overflow-hidden grid" style={{ backgroundImage: `url(${result.pfp_url})`, backgroundSize: "cover" }}>
             {/* <img className="h-[100vh]  w-[100vw] blur-[6px] py-[1vh] " src={result.pfp_url} alt={result.pfp_url} /> */}
 
             <div className="backdrop-blur-lg p-3 text-sm">
@@ -35,7 +33,11 @@ export default function Page() {
                             Link Pool
                         </Link>
                         <div>
-                            <ShareModal />
+                            <ShareModal 
+                            handle_name={result.handle_name}
+                            description={result.description}
+                            url={`${process.env.NEXT_PUBLIC_BASEURL}/${result.handle_name}`}
+                            />
                         </div>
                     </div>
                     <div className="grid place-items-center text-center gap-1">
@@ -47,12 +49,14 @@ export default function Page() {
                     <div className="max-w-3xl my-3">
                         <h3 className="py-2 text-center">Click on these links to open them in new tab</h3>
                         <div className="text-black w-full grid res-grid-280 gap-2 ">
+
                             {result.links && result.links.length > 0 && result.links.map((link, i) => (
-                                <div key={i} className="flex p-2 bg-slate-100 rounded-lg cursor-pointer">
+                                <div key={i} className="flex p-2 bg-slate-100  rounded-lg cursor-pointer">
                                     <Link className="w-full text-center" target="_blank" href={link.link}>{link.link_text}</Link>
                                     <img src="/svg/arrow-up-right-01-stroke-rounded.svg" />
                                 </div>
                             ))}
+
                         </div>
                     </div>
                     <div className="flex justify-center my-6">

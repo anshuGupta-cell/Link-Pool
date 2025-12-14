@@ -3,85 +3,58 @@ import { useRef } from "react";
 
 const ShareModal = (props) => {
     const shareRef = useRef()
+    const {
+        handle_name,
+        description,
+        url
+    } = props;
 
     const openMenu = () => {
         shareRef.current.style.height = "auto"
         shareRef.current.style.opacity = "1"
-        console.log("shareRef.current")
     }
+
     const closeMenu = () => {
         shareRef.current.style.height = "0"
         shareRef.current.style.opacity = "0"
-        console.log("shareRef.current")
 
     }
-
-    const title = "anshu"
-    const text = 0
-    const url = "sdfsf"
 
     let platforms = [
         {
             name: "WhatsApp",
-            link: `https://wa.me/?text=${text}&20${url}`,
-            logo: "/svg/.png"
-        },
-        {
-            name: "Instagram",
-            link: "https://instagram.com",
-            logo: "/svg/.png"
+            link: `https://wa.me/?description=${description}&20${url}`,
+            logo: "/logo/social.png"
         },
         {
             name: "Facebook",
-            link: `https://www.facebook.com/sharer/sharerphp?u=${url}`,
-            logo: "/svg/.png"
+            link: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+            logo: "/logo/facebook.png"
         },
         {
             name: "X",
-            link: `https://t.me/share/url?url=${url}&text=${text}`,
-            logo: "/svg/.png"
+            link: `https://t.me/share/url?url=${url}&description=${description}`,
+            logo: "/logo/twitter.png"
         },
         {
             name: "LinkedIn",
-            link: `https://www.linkedin.com/sharing/shareoffsite/?url=${url}`,
-            logo: "/svg/.png"
+            link: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+            logo: "/logo/linkedin.png"
         },
         {
             name: "Gmail",
-            link: `https://mail.google.com/main/?view=cm&body=${text}%20${url}`,
-            logo: "/svg/.png"
-        },
-        {
-            name: "Snapchat",
-            link: `https://www.snapchat.com/share?url=${url}`,
-            logo: "/svg/.png"
-        },
-        {
-            name: "SMS",
-            link: `https://sms:?&body=${text}%20${url}`,
-            logo: "/svg/.png"
-        },
-        {
-            name: "Copy",
-            link: null,
-            logo: "/svg/.png"
-        },
-        {
-            name: "More options",
-            link: null,
-            logo: "/svg/.png"
-        },
+            link: `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${handle_name}%20|%20LinkPool&body=${description}%20${url}`,
+            logo: "/logo/gmail.png"
+        }
 
     ]
 
-    const handleShare = async () => {
+    const moreOptions = async () => {
         const shareData = {
-            title: "title",
-            text: 0,
-            url: window.location.href,
+            title: `${handle_name} | Link Pool`,
+            description: description,
+            url: handle_name,
         }
-
-        console.log(shareData);
 
         if (navigator.share) {
             try {
@@ -91,36 +64,58 @@ const ShareModal = (props) => {
             }
         } else {
             //fallback
-            const text = encodeURIComponent(`Check this out! ${window.location.href}`)
-            window.open(`https://wa.me/?text=${text}`, "_blank")
+            const description = encodeURIComponent(`Check this out! ${url}`)
+            window.open(`https://wa.me/?description=${description}`, "_blank")
         }
     }
 
+    const handleCopy = async (handle) => {
+        try {
+            await navigator.clipboard.writeText(url)
+            toast.success("Copied to clipboard")
+        } catch (err) {
+            toast.error("Failed to copy")
+        }
+    }
 
     return (
         <>
             <div onClick={() => { openMenu() }} className="w-full flex">
-                <button className="text-white bg-cyan-500 px-3 py-2 rounded-xl shadow-purple-700 shadow-sm" >Share</button>
+                <button className="description-white bg-cyan-500 px-3 py-2 rounded-xl shadow-purple-700 shadow-sm" >Share</button>
             </div>
             <div id="shareModal" onClick={(e) => e.target.id === "shareModal" && closeMenu()} ref={shareRef} className="fixed top-0 overflow-hidden h-0 bottom-0 left-0 right-0   opacity-0 bg-gray-900/50 grid place-items-end p-3">
 
-                <div className="mx-auto w-full max-w-3xl p-4 grid rounded-xl bg-slate-200 text-black gap-2 ">
-                    <h2 className="flex w-full place-content-between text-xl font-semibold">
+                {/* content */}
+                <div className="mx-auto w-full max-w-3xl p-4 grid rounded-xl bg-slate-200 dark:bg-slate-800 description-black gap-2 ">
+                    <h2 className="flex w-full place-content-between description-xl font-semibold">
                         <p>Share your link pool</p>
-                        <button className="px-4 py-2 text-sm rounded-full border bg-slate-300/80" onClick={closeMenu}>Close</button>
+                        <button  onClick={closeMenu} className="px-4 py-2 description-sm rounded-full border bg-slate-200 dark:bg-slate-700/80">Close</button>
                     </h2>
-                    <div className="flex flex-wrap gap-3">
-                        {platforms.map((platform, i) => (
+                    <div className="grid gap-3">
+                        <div className="flex flex-wrap gap-3">
 
-                            < a key={i} href={platform.link} target="_blank" className="grid w-16  " >
-                                <Image width={100} height={100} className="rounded-xl aspect-square object-cover" src="/profile_pic.png" alt="profile pic" />
-                                <p className="text-center">{platform.name}</p>
-                            </a>
-                        ))}
-                        <ul onClick={handleShare} className="grid w-16  ">
-                            <Image width={100} height={100} className="rounded-xl aspect-square object-cover" src="/profile_pic.png" alt="" />
-                            <p className="text-center">More</p>
-                        </ul>
+                            {/* links */}
+                            {platforms.map((platform, i) => (
+
+                                < a key={i} href={platform.link} target="_blank" className="grid w-16 h-16 items-center" >
+                                    <img className=" m-auto object-cover w-9" src={platform.logo} alt="profile pic" />
+                                    <p className="text-center">{platform.name}</p>
+                                </a>
+                            ))}
+                        </div>
+
+
+                        {/* more options */}
+                        <div className="flex flex-wrap gap-3">
+                            <ul onClick={handleCopy} className="grid w-16 h-16 items-center">
+                                <img className="rounded-xl m-auto object-cover dark:invert" src="/svg/copy-link-stroke-rounded.svg" alt="" />
+                                <p className="text-center ">Copy</p>
+                            </ul>
+                            <ul onClick={moreOptions} className="grid w-16 h-16">
+                                <img className="rounded-xl m-auto object-cover dark:invert" src="/svg/more-vertical-stroke-rounded.svg" alt="" />
+                                <p className="text-center">More</p>
+                            </ul>
+                        </div>
 
                     </div>
                 </div>
