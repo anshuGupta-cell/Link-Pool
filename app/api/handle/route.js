@@ -19,7 +19,7 @@ export const GET = async () => {
 
     try {
 
-        const res = await pool.query('SELECT * FROM handle where uid = $1', [user.id])
+        const res = await pool.query("SELECT h.hno, h.handle_name, h.pfp_url, h.description, h.type, json_agg(json_build_object('lno', l.lno, 'hno', l.hno, 'link', l.link, 'link_text', l.link_text)) as links from handle h left join link l on h.hno = l.hno WHERE uid = $1 GROUP BY h.hno, h.handle_name, h.pfp_url, h.description, h.type", [user.id])
         console.log(res);
 
         return Response.json({
@@ -89,10 +89,10 @@ export const PATCH = async (req) => {
     }
     const user = await currentUser()
 
-    const { hno, newHandle, newPfp_url, newDesc } = await req.json()
+    const { hno, newHandle, newPfp_url, newDesc, newType } = await req.json()
     try {
 
-        await pool.query('UPDATE handle SET handle_name = $1, pfp_url = $2, description = $3 WHERE hno = $4 and uid = $5', [newHandle, newPfp_url, newDesc, hno, user.id])
+        await pool.query('UPDATE handle SET handle_name = $1, pfp_url = $2, description = $3, type = $4 WHERE hno = $5 and uid = $6', [newHandle, newPfp_url, newDesc, newType, hno, user.id])
         return Response.json({
             success: true,
             message: "Handle updated successfully!"

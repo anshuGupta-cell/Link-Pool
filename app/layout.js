@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import {
   ClerkProvider
 } from "@clerk/nextjs"
+import Providers from "./provider";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -28,16 +29,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={` antialiased dark:text-white/80 dark:bg-slate-800`}>
+    <Providers>
+      <ClerkProvider>
+        <html lang="en">
+          <body className={` antialiased dark:text-white/80 dark:bg-slate-800`}>
 
-          <ToastContainer />
-          <Navbar />
-          {children}
+            <ToastContainer />
+            <Navbar />
+            {children}
 
-        </body>
-      </html>
-    </ClerkProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    </Providers>
   )
 }

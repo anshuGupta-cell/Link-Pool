@@ -6,6 +6,9 @@ import { toast } from "react-toastify"
 import OptionsModal from "./OptionsModal"
 import Link from "next/link"
 import Dropdown from "./Dropdown"
+import { useDispatch } from "react-redux"
+import { setLoading } from "@/app/redux/loader/loaderSlice.js"
+import Spinner from "./Loader/Spinner"
 
 const Handle = () => {
 
@@ -15,20 +18,23 @@ const Handle = () => {
     const [newHandle, setNewHandle] = useState()
     const [newPfp_url, setNewPfp_Url] = useState()
     const [newDesc, setNewDesc] = useState()
+    const [newType, setNewType] = useState()
     const [showOptions, setShowOptions] = useState(false)
+    const dispatch = useDispatch()
 
 
-
+    // get data of handles and links
     const fetchHandle = async () => {
+        dispatch(setLoading(true))
         const result = await fetch("/api/handle", { cache: "no-store" })
         const data = (await result.json())
         setHandles(data.res.rows)
         console.log("handles", data.res.rows);
+        dispatch(setLoading(false))
 
     }
 
     const deleteHandle = async (hno) => {
-
         const res = await fetch("/api/handle", {
             method: "DELETE",
             "Content-Type": "application/json",
@@ -53,6 +59,7 @@ const Handle = () => {
         setNewPfp_Url(handles[i].pfp_url)
         setNewDesc(handles[i].description)
         setModalState(!modalState)
+        setNewType(handles[i].type)
     }
 
     const updateHandle = async (e) => {
@@ -62,7 +69,7 @@ const Handle = () => {
             method: "PATCH",
             "Content-Type": "application/json",
             body: JSON.stringify({
-                hno, newHandle, newPfp_url, newDesc
+                hno, newHandle, newPfp_url, newDesc, newType
             })
         })
         const data = await res.json()
@@ -78,6 +85,7 @@ const Handle = () => {
         setNewPfp_Url("")
         setNewDesc("")
         setModalState(false)
+        setNewType("public")
     }
 
     const handleCopy = async (handle) => {
@@ -89,12 +97,9 @@ const Handle = () => {
         }
     }
 
-
     useEffect(() => {
         fetchHandle()
     }, [])
-
-
 
     return (
         <>
@@ -107,7 +112,10 @@ const Handle = () => {
                             <div className="grid gap-2 items-center">
 
                                 {/* options */}
-                                <ul className="flex justify-end">
+                                <ul className="flex justify-between">
+                                     { <div className="grid place-content-center rounded-xl bg-indigo-200 dark:bg-indigo-900/10 py-2 px-3 border border-purple-800 ">
+                                        <img className="w-5  dark:invert " src={handle.type === 'private'? '/svg/square-lock-02-stroke-rounded.svg':'/svg/earth-stroke-rounded.svg'} />
+                                    </div>}
                                     <div className="relative flex gap-2 items-center h-fit">
                                         {/* visit button */}
                                         <Link href={`/${handle.handle_name}`} target="_blank" className="flex items-center justify-center gap-2 rounded-xl bg-indigo-200 dark:bg-indigo-900/10 py-2 px-5 border border-purple-800 cursor-pointer ">
@@ -124,7 +132,7 @@ const Handle = () => {
                                                 <ul onClick={() => { initiateUpdate(i) }} className="flex gap-2">
                                                     <img className="w-5 dark:invert" src="/svg/pencil-edit-02-stroke-rounded.svg" alt="" />
                                                     <p className="text-nowrap">Edit handle</p>
-                                                </ul>
+                                                </ul> 
                                                 <ul onClick={() => { deleteHandle(handle.hno) }} className="flex gap-2">
                                                     <img className="w-5 dark:invert" src="/svg/delete-02-stroke-rounded.svg" alt="" />
                                                     <p className="text-nowrap">Delete handle</p>
@@ -155,7 +163,10 @@ const Handle = () => {
                         </div>
                         <div className="bg-white/10 p-2 rounded-lg">
                             <h2 className="text-xl font-medium">Links</h2>
-                            <Links hno={handle.hno} />
+                            <Links
+                                hno={handle.hno}
+                                hLinks={handle.links}
+                            />
                         </div>
 
                     </div>
@@ -171,8 +182,11 @@ const Handle = () => {
                 setNewDesc={setNewDesc}
                 updateHandle={updateHandle}
                 setModalState={setModalState}
-
+                setNewType={setNewType}
+                newType={newType}
             />}
+            <Spinner />
+
         </>
     )
 }

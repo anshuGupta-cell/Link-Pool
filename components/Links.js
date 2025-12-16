@@ -3,14 +3,17 @@ import { toast } from "react-toastify"
 
 
 const Links = (props) => {
-    const { hno } = props
-    const [links, setLinks] = useState([])
+    const { hno, hLinks } = props
+    const [links, setLinks] = useState(hLinks)
     const [modalState, setModalState] = useState(false)
     const [addModalState, setAddModalState] = useState(false)
     const [newLink, setNewLink] = useState("")
     const [lno, setLno] = useState("")
     const [newLinkText, setNewLinkText] = useState("")
-    const handle_name = 'anshu'
+
+    useEffect(()=>{
+        setLinks(hLinks)
+    })
 
     const fetchLinks = async () => {
 
@@ -95,10 +98,6 @@ const Links = (props) => {
         fetchLinks()
     }
 
-    useEffect(() => {
-        fetchLinks()
-    }, [])
-
     return (
         <div className="grid gap-2 w-full ">
             {links.length > 0 && links.map((link, i) => (
@@ -119,7 +118,7 @@ const Links = (props) => {
 
             {/* modal  */}
 
-            {modalState && <div id="updateModal" onClick={(e) => { cancelUpdate(e) }} className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 grid">
+            {modalState && <div id="updateModal" onClick={(e) => { cancelUpdate(e) }} className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 grid z-10">
 
                 <div className="w-[300px] md:w-[480px] m-auto rounded-lg bg-slate-50 dark:bg-gray-700 p-3 grid gap-2">
                     <form onSubmit={(e) => updateLink(e)} className="grid gap-2">
@@ -133,7 +132,7 @@ const Links = (props) => {
                     </form>
                 </div>
             </div>}
-            {addModalState && <div id="addModal" onClick={(e) => { e.target.id === 'addModal' && setAddModalState(false) }} className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 grid">
+            {addModalState && <div id="addModal" onClick={(e) => { e.target.id === 'addModal' && setAddModalState(false) }} className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 grid z-10">
 
                 <div className="w-[300px] md:w-[480px]  m-auto rounded-lg bg-slate-50 dark:bg-gray-700 p-3 grid gap-2">
                     <form onSubmit={(e) => addLink(e)} className="grid gap-2 ">

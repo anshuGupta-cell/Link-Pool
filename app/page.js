@@ -1,4 +1,5 @@
 "use client"
+import Counter from "@/components/counter";
 import Spinner from "@/components/Loader/Spinner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

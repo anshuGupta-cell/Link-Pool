@@ -1,8 +1,12 @@
 "use client"
+import Spinner from "@/components/Loader/Spinner"
+import OptionsModal from "@/components/OptionsModal"
 import { SearchParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime"
 import { useSearchParams } from "next/navigation"
 import React, { Suspense, use, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import { setLoading } from "../redux/loader/loaderSlice"
 
 
 const Generate = () => {
@@ -11,6 +15,10 @@ const Generate = () => {
     const [handle, setHandle] = useState("")
     const [pic, setPic] = useState("")
     const [desc, setDesc] = useState("")
+    const [type, setType] = useState("public")
+    const dispatch = useDispatch()
+    const isLoading = useSelector((state) => state.loader.loading)
+
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
@@ -49,24 +57,31 @@ const Generate = () => {
     }
 
     const submitLinks = async (e) => {
+        dispatch(setLoading(true))
         e.preventDefault()
         let headersList = {
             "Accept": "*/*",
             "Content-Type": "application/json"
         }
+        console.log("type", type);
+
 
         let bodyContent = JSON.stringify({
             links,
             handle,
             pic,
-            desc
+            desc,
+            type
         });
+        console.log(bodyContent);
+
 
         let response = await fetch("/api/add", {
             method: "POST",
             body: bodyContent,
             headers: headersList
         });
+        dispatch(setLoading(false))
 
         let data = await response.json();
         if (data.success) {
@@ -78,6 +93,7 @@ const Generate = () => {
         setHandle("")
         setLinks([{ link: "", text: "" }])
         setPic("")
+        setType("public")
         setDesc("")
     }
 
@@ -111,7 +127,18 @@ const Generate = () => {
 
                     </div>
                     <div className="grid gap-2">
-                        <h3 className="font- text-lg">Step 3. Add link and link text</h3>
+                        <h3 className="font- text-lg">Step 3. Manage who can see this LinkPool</h3>
+                        <ul className="w-[92%] grid res-grid-200 gap-2 ">
+                            <label name="type" className={`flex gap-2 p-2 rounded-lg items-center cursor-pointer border-2 border-gray-600/20 ${type === 'public'? 'border-indigo-400 bg-indigo-200 dark:bg-indigo-600/25' : ''}`}>
+                                <input className="size-5 accent-purple-600" name="type" type="radio" value="public" onChange={(e) => setType(e.target.value)} defaultChecked /> Public
+                            </label>
+                            <label  className={`flex gap-2 p-2 rounded-lg items-center cursor-pointer border-2 border-gray-600/20 ${type === 'private'? 'border-indigo-400 bg-indigo-200 dark:bg-indigo-600/25' : ''}`}>
+                                <input className="size-5 accent-purple-600" name="type" type="radio" value="private" onChange={(e) => setType(e.target.value)} /> Private
+                            </label>
+                        </ul>
+                    </div>
+                    <div className="grid gap-2">
+                        <h3 className="font- text-lg">Step 4. Add link and link text</h3>
                         <div className="border rounded-lg py-1">
 
                             {links && links.map((item, i) => (
@@ -141,6 +168,9 @@ const Generate = () => {
                     </div>
                 </form>
             </div>
+            {isLoading && <div className="fixed top-0 overflow-hidden bottom-0 left-0 right-0 bg-gray-900/50 grid place-items-center p-3">
+                <Spinner />
+            </div>}
         </div>
     )
 }

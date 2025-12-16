@@ -76,7 +76,7 @@ const Navbar = () => {
                                 <img className="w-5 h-5 dark:invert" src={`${isDarkMode ? "/svg/moon-02-stroke-rounded.svg" : "/svg/sun-02-stroke-rounded.svg"}`} alt="theme" />
                             </button>
 
-                            <div className="grid">
+                            <div className="flex">
                                 <SignedOut>
                                     <SignInButton />
                                     <SignUpButton>
