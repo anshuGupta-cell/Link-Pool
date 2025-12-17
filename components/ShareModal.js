@@ -23,7 +23,7 @@ const ShareModal = (props) => {
     let platforms = [
         {
             name: "WhatsApp",
-            link: `https://wa.me/?text=${description}&20${url}`,
+            link: `https://wa.me/?text=Check%20out%20this%20LinkPool!%20${url}`,
             logo: "/logo/social.png"
         },
         {
