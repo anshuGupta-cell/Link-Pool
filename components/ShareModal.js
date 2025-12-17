@@ -23,17 +23,17 @@ const ShareModal = (props) => {
     let platforms = [
         {
             name: "WhatsApp",
-            link: `https://wa.me/?description=${description}&20${url}`,
+            link: `https://wa.me/?text=${description}&20${url}`,
             logo: "/logo/social.png"
         },
         {
             name: "Facebook",
-            link: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+            link: `https://www.facebook.com/sharer.php?u=${url}`,
             logo: "/logo/facebook.png"
         },
         {
             name: "X",
-            link: `https://t.me/share/url?url=${url}&description=${description}`,
+            link: `https://x.com/intent/tweet?text=${url}%20${description}`,
             logo: "/logo/twitter.png"
         },
         {
