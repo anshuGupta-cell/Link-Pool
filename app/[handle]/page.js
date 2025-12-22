@@ -55,7 +55,7 @@ export default function Page() {
                             </div>
                         </div>
                         <div className="grid place-items-center text-center gap-1">
-                            <img className="w-28 h-28 object-cover rounded-full" src={result.pfp_url || "/profile_pic.png"} alt={result.pfp_url || "profile pic"} />
+                            <img className="w-28 h-28 object-cover rounded-full" src={result.pfp_url} alt={result.pfp_url || "profile pic"} />
                             <h1 className="text-xl" >{result.handle_name}</h1>
                             <p className="text-xs">{result.description}</p>
                         </div>
@@ -73,9 +73,9 @@ export default function Page() {
 
                             </div>
                         </div>
-                        <div className="flex justify-center my-6">
+                        {/* <div className="flex justify-center my-6">
                             <button className="text-white bg-purple-700 px-3 py-2 rounded-xl shadow-pink-600 shadow-md">Follow</button>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
