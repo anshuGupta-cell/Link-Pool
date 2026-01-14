@@ -104,7 +104,7 @@ const Links = (props) => {
                 <ul key={link.lno} className="flex justify-between gap-2 border border-purple-500 rounded-lg p-2">
                     <li>
                         <p>{link.link_text}</p>
-                        <p className="text-sm">{link.link}</p>
+                        <p className="text-sm text-wrap">{link.link}</p>
                     </li>
                     <li className="grid gap-2">
                         <img onClick={() => { initiateUpdate(i, link.lno) }} className="w-5 dark:invert" src="/svg/pencil-edit-02-stroke-rounded.svg" alt="edit link" />
